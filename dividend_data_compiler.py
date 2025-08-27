@@ -22,7 +22,7 @@ def export_to_csv(t, t_list):
 
     for i in range(len(t_list)):
         try:
-            csv_file.write(f'{t_list[i]},{t.tickers[t_list[i]].info["dividendRate"]} ({t.tickers[t_list[i]].info["dividendYield"]}%),{t.tickers[t_list[0]].dividends.index[-1].date()},{datetime.fromtimestamp(t.tickers[t_list[i]].info["exDividendDate"], tz=timezone.utc).date()}\n')
+            csv_file.write(f'{t_list[i]},{t.tickers[t_list[i]].info["dividendRate"]} ({t.tickers[t_list[i]].info["dividendYield"]}%),{t.tickers[t_list[i]].dividends.index[-1].date()},{datetime.fromtimestamp(t.tickers[t_list[i]].info["exDividendDate"], tz=timezone.utc).date()}\n')
         except:
             print(f'Error writing information of {t_list[i]} into csv file.')
 
