@@ -4,6 +4,10 @@ A Python script to collect historical dividend data for S&amp;P/TSX 60 constitue
 # Technologies used
 - YFinance library
 - Pandas
+- Gooey for GUI
+
+# Choosing to use Gooey
+I chose to use Gooey as a tool to make the script accessible to non-technical users quickly. With a Graphical User Interface, non-technical users can use the dividend data compiler without having to rewrite the code to suit their individual needs. 
 
 # Disclaimer
 - This is a personal project that uses the yfinance Python library to access publicly available stock data on Yahoo Finance.
