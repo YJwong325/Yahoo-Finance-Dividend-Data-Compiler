@@ -1,6 +1,7 @@
 import yfinance as yf
 from datetime import datetime, timezone, timedelta, date
 import pandas as pd
+from gooey import Gooey, GooeyParser
 
 def display_data(t, t_list):
     for symbol in t_list:
