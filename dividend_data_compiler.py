@@ -61,13 +61,8 @@ def export_ohlc_to_csv(t, t_list, period):
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
-    parser.add_argument(
-        "--menu", 
-        widget="RadioGroup", 
-        choices=["a", "b", "c"],
-        default="a",
-        help="Choose to export or display data"
-    )
+    group = parser.add_mutually_exclusive_group("Menu")
+    group.add_argument("--display", action="store_true", help="Display dividend data in console")
 
     args = parser.parse_args()
 
