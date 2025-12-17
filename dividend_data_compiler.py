@@ -57,19 +57,41 @@ def export_ohlc_to_csv(t, t_list, period):
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-
+@Gooey
 def main():
+    parser = GooeyParser(description="Dividend Data Compiler")
+
+    parser.add_argument(
+        "--menu", 
+        widget="RadioGroup", 
+        choices=["a", "b", "c"],
+        default="a",
+        help="Choose to export or display data"
+    )
+
+    args = parser.parse_args()
+
+    print(f"You selected: {args.menu}")
     # Replace the placeholder ('######') in the bracket with ticker symbols of your choice delimited by spaces
     # For example: 'AEM.TO AQN.TO ATD.TO'
-    tickers = yf.Tickers('######')
+    # List of TSX60 ticker symbols
+    tickers = yf.Tickers('AEM.TO')
 
     # Replace the placeholders ('######') in the array with ticker symbols that you entered in the line above
     # For example: ["AEM.TO", "AQN.TO", "ATD.TO"]
-    ticker_list = ["######"]
+    # List of symbols to provide data for
+    ticker_list = ["AEM.TO"]
 
-    display_data(tickers, ticker_list)
-    export_to_csv(tickers, ticker_list)
-    export_ohlc_to_csv(tickers, ticker_list, 7)
+    if args.menu == "Display Data":
+        print("DISPLAY")
+    elif args.menu == "Export to CSV":
+        print("EXPORT CSV")
+    elif args.menu == "Export OHLC to CSV":
+        print("EXPORT OHLC")
+
+    # display_data(tickers, ticker_list)
+    # export_to_csv(tickers, ticker_list)
+    # export_ohlc_to_csv(tickers, ticker_list, 7)
 
 if __name__ == "__main__":
     main()
