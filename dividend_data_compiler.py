@@ -68,13 +68,13 @@ def main():
 
     args = parser.parse_args()
 
-    # Replace the placeholder ('######') in the bracket with ticker symbols of your choice delimited by spaces
-    # For example: 'AEM.TO AQN.TO ATD.TO'
     # List of TSX60 ticker symbols
-    tickers = yf.Tickers('AEM.TO')
+    tickers = yf.Tickers('AEM.TO AQN.TO ATD.TO BMO.TO BNS.TO ABX.TO BCE.TO BAM.TO ' \
+    'BN.TO BIP-UN.TO CAE.TO CCO.TO CAR-UN.TO CM.TO CNR.TO CNQ.TO CP.TO CTC-A.TO CCL-B.TO ' \
+    'CVE.TO GIB-A.TO CSU.TO DOL.TO EMA.TO ENB.TO FM.TO FSV.TO FTS.TO FNV.TO WN.TO GIL.TO H.TO ' \
+    'IMO.TO IFC.TO K.TO L.TO MG.TO MFC.TO MRU.TO NA.TO NTR.TO OTEX.TO PPL.TO POW.TO QSR.TO RCI-B.TO ' \
+    'RY.TO SAP.TO SHOP.TO SLF.TO SU.TO TRP.TO TECK-B.TO T.TO TRI.TO TD.TO TOU.TO WCN.TO WPM.TO WSP.TO')
 
-    # Replace the placeholders ('######') in the array with ticker symbols that you entered in the line above
-    # For example: ["AEM.TO", "AQN.TO", "ATD.TO"]
     # List of symbols to provide data for
     ticker_list = ["AEM.TO"]
 
@@ -85,7 +85,7 @@ def main():
     elif args.exportOHLC:
         export_ohlc_to_csv(tickers, ticker_list, 7)
     else:
-        print("No option selected. Please choose an action.")
+        print("No option selected. Please choose an action to perform.")
 
 if __name__ == "__main__":
     main()
