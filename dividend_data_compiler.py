@@ -62,11 +62,12 @@ def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
     group = parser.add_mutually_exclusive_group("Menu")
-    group.add_argument("--display", action="store_true", help="Display dividend data in console")
+    group.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
+    group.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
+    group.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
 
     args = parser.parse_args()
 
-    print(f"You selected: {args.menu}")
     # Replace the placeholder ('######') in the bracket with ticker symbols of your choice delimited by spaces
     # For example: 'AEM.TO AQN.TO ATD.TO'
     # List of TSX60 ticker symbols
@@ -77,16 +78,14 @@ def main():
     # List of symbols to provide data for
     ticker_list = ["AEM.TO"]
 
-    if args.menu == "Display Data":
-        print("DISPLAY")
-    elif args.menu == "Export to CSV":
-        print("EXPORT CSV")
-    elif args.menu == "Export OHLC to CSV":
-        print("EXPORT OHLC")
-
-    # display_data(tickers, ticker_list)
-    # export_to_csv(tickers, ticker_list)
-    # export_ohlc_to_csv(tickers, ticker_list, 7)
+    if args.display:
+        display_data(tickers, ticker_list)
+    elif args.export:
+        export_to_csv(tickers, ticker_list)
+    elif args.exportOHLC:
+        export_ohlc_to_csv(tickers, ticker_list, 7)
+    else:
+        print("No option selected. Please choose an action.")
 
 if __name__ == "__main__":
     main()
