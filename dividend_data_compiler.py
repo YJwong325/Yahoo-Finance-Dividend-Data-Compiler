@@ -61,10 +61,32 @@ def export_ohlc_to_csv(t, t_list, period):
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
-    group = parser.add_mutually_exclusive_group("Menu")
+    group = parser.add_mutually_exclusive_group()
     group.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
     group.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
     group.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
+
+    parser.add_argument(
+        "symbols", 
+        metavar="Symbols", 
+        widget="Listbox", 
+        choices=[
+                    "AEM.TO", "AQN.TO", "ATD.TO", "BMO.TO", "BNS.TO", 
+                    "ABX.TO", "BCE.TO", "BAM.TO", "BN.TO", "BIP-UN.TO", 
+                    "CAE.TO", "CCO.TO", "CAR-UN.TO", "CM.TO", "CNR.TO", 
+                    "CNQ.TO", "CP.TO", "CTC-A.TO", "CCL-B.TO", "CVE.TO", 
+                    "GIB-A.TO", "CSU.TO", "DOL.TO", "EMA.TO", "ENB.TO", 
+                    "FM.TO", "FSV.TO", "FTS.TO", "FNV.TO", "WN.TO", 
+                    "GIL.TO", "H.TO", "IMO.TO", "IFC.TO", "K.TO", 
+                    "L.TO", "MG.TO", "MFC.TO", "MRU.TO", "NA.TO", 
+                    "NTR.TO", "OTEX.TO", "PPL.TO", "POW.TO", "QSR.TO", 
+                    "RCI-B.TO", "RY.TO", "SAP.TO", "SHOP.TO", "SLF.TO", 
+                    "SU.TO", "TRP.TO", "TECK-B.TO", "T.TO", "TRI.TO", 
+                    "TD.TO", "TOU.TO", "WCN.TO", "WPM.TO", "WSP.TO"
+                ], 
+        nargs='*', 
+        help="List of ticker symbols to provide data for"
+    )
 
     args = parser.parse_args()
 
@@ -76,7 +98,7 @@ def main():
     'RY.TO SAP.TO SHOP.TO SLF.TO SU.TO TRP.TO TECK-B.TO T.TO TRI.TO TD.TO TOU.TO WCN.TO WPM.TO WSP.TO')
 
     # List of symbols to provide data for
-    ticker_list = ["AEM.TO"]
+    ticker_list = args.symbols
 
     if args.display:
         display_data(tickers, ticker_list)
@@ -85,7 +107,7 @@ def main():
     elif args.exportOHLC:
         export_ohlc_to_csv(tickers, ticker_list, 7)
     else:
-        print("No option selected. Please choose an action to perform.")
+        print("No option selected. Please try again.")
 
 if __name__ == "__main__":
     main()
