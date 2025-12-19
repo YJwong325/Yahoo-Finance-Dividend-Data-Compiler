@@ -72,6 +72,39 @@ def main():
 
     # TODO: split tickers into different sectors 
     parser.add_argument(
+        "basic_mats",
+        metavar="Basic Materials",
+        widget="Listbox",
+        choices=[
+            "AEM.TO", "ABX.TO", "FM.TO", "FNV.TO", "K.TO", "NTR.TO", "TECK-B.TO", "WPM.TO"
+        ],
+        nargs='*',
+        help="Basic Materials sector ticker symbols"
+    )
+
+    parser.add_argument(
+        "comm_services",
+        metavar="Communication Services",
+        widget="Listbox",
+        choices=[
+            "BCE.TO", "RCI-B.TO", "T.TO"
+        ],
+        nargs='*',
+        help="Communication Services sector ticker symbols"
+    )
+
+    parser.add_argument(
+        "consumer_cyc",
+        metavar="Consumer Cyclical",
+        widget="Listbox",
+        choices=[
+            "ATD.TO", "CTC-A.TO", "CCL-B.TO", "GIL.TO", "MG.TO", "QSR.TO"
+        ],
+        nargs='*',
+        help="Consumer Cyclical sector ticker symbols"
+    )
+
+    parser.add_argument(
         "symbols", 
         metavar="Symbols", 
         widget="Listbox", 
