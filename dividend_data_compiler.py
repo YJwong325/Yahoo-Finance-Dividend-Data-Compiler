@@ -57,15 +57,20 @@ def export_ohlc_to_csv(t, t_list, period):
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-@Gooey
+@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600))
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
-    group = parser.add_mutually_exclusive_group()
+    radio = parser.add_argument_group("Menu Options", "Choose to display or export data to a CSV file")
+
+    group = radio.add_mutually_exclusive_group()
     group.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
     group.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
     group.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
 
+    # todo: allow use to choose filename and file path to download
+
+    # TODO: split tickers into different sectors 
     parser.add_argument(
         "symbols", 
         metavar="Symbols", 
