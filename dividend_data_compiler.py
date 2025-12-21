@@ -57,11 +57,12 @@ def export_ohlc_to_csv(t, t_list, period):
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600))
+@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600), optional_cols=1)
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
     radio = parser.add_argument_group("Menu Options", "Choose to display or export data to a CSV file")
+    ticker_group = parser.add_argument_group("Ticker Options", "Select ticker symbols from different sectors to provide data for")
 
     group = radio.add_mutually_exclusive_group()
     group.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
@@ -71,59 +72,124 @@ def main():
     # todo: allow use to choose filename and file path to download
 
     # TODO: split tickers into different sectors 
-    parser.add_argument(
-        "basic_mats",
+    ticker_group.add_argument(
+        "--basic_mats",
         metavar="Basic Materials",
         widget="Listbox",
         choices=[
             "AEM.TO", "ABX.TO", "FM.TO", "FNV.TO", "K.TO", "NTR.TO", "TECK-B.TO", "WPM.TO"
         ],
         nargs='*',
-        help="Basic Materials sector ticker symbols"
+        help="Basic Materials sector ticker symbols",
+        default=[]
     )
 
-    parser.add_argument(
-        "comm_services",
+    ticker_group.add_argument(
+        "--comm_services",
         metavar="Communication Services",
         widget="Listbox",
         choices=[
             "BCE.TO", "RCI-B.TO", "T.TO"
         ],
         nargs='*',
-        help="Communication Services sector ticker symbols"
+        help="Communication Services sector ticker symbols",
+        default=[]
     )
 
-    parser.add_argument(
-        "consumer_cyc",
+    ticker_group.add_argument(
+        "--consumer_cyc",
         metavar="Consumer Cyclical",
         widget="Listbox",
         choices=[
             "ATD.TO", "CTC-A.TO", "CCL-B.TO", "GIL.TO", "MG.TO", "QSR.TO"
         ],
         nargs='*',
-        help="Consumer Cyclical sector ticker symbols"
+        help="Consumer Cyclical sector ticker symbols",
+        default=[]
     )
 
-    parser.add_argument(
-        "symbols", 
-        metavar="Symbols", 
-        widget="Listbox", 
+    ticker_group.add_argument(
+        "--consumer_stap",
+        metavar="Consumer Staples",
+        widget="Listbox",
         choices=[
-                    "AEM.TO", "AQN.TO", "ATD.TO", "BMO.TO", "BNS.TO", 
-                    "ABX.TO", "BCE.TO", "BAM.TO", "BN.TO", "BIP-UN.TO", 
-                    "CAE.TO", "CCO.TO", "CAR-UN.TO", "CM.TO", "CNR.TO", 
-                    "CNQ.TO", "CP.TO", "CTC-A.TO", "CCL-B.TO", "CVE.TO", 
-                    "GIB-A.TO", "CSU.TO", "DOL.TO", "EMA.TO", "ENB.TO", 
-                    "FM.TO", "FSV.TO", "FTS.TO", "FNV.TO", "WN.TO", 
-                    "GIL.TO", "H.TO", "IMO.TO", "IFC.TO", "K.TO", 
-                    "L.TO", "MG.TO", "MFC.TO", "MRU.TO", "NA.TO", 
-                    "NTR.TO", "OTEX.TO", "PPL.TO", "POW.TO", "QSR.TO", 
-                    "RCI-B.TO", "RY.TO", "SAP.TO", "SHOP.TO", "SLF.TO", 
-                    "SU.TO", "TRP.TO", "TECK-B.TO", "T.TO", "TRI.TO", 
-                    "TD.TO", "TOU.TO", "WCN.TO", "WPM.TO", "WSP.TO"
-                ], 
-        nargs='*', 
-        help="List of ticker symbols to provide data for"
+            "DOL.TO", "WN.TO", "L.TO", "MRU.TO", "SAP.TO"
+        ],
+        nargs='*',
+        help="Consumer Staples sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--energy",
+        metavar="Energy",
+        widget="Listbox",
+        choices=[
+            "AQN.TO", "CCO.TO", "CNQ.TO", "CVE.TO", "ENB.TO", "IMO.TO", "PPL.TO", "SU.TO", "TRP.TO", "TOU.TO"
+        ],
+        nargs='*',
+        help="Energy sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--fin_services",
+        metavar="Financial Services",
+        widget="Listbox",
+        choices=[
+            "BMO.TO", "BNS.TO", "BAM.TO", "BN.TO", "CM.TO", "IFC.TO", "MFC.TO", "NA.TO", "POW.TO", "RY.TO", "SLF.TO", "TD.TO"
+        ],
+        nargs='*',
+        help="Financial Services sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--industrials",
+        metavar="Industrials",
+        widget="Listbox",
+        choices=[
+            "CAE.TO", "CNR.TO", "CP.TO", "TRI.TO", "WCN.TO", "WSP.TO"
+        ],
+        nargs='*',
+        help="Industrials sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--info_tech",
+        metavar="Information Technology",
+        widget="Listbox",
+        choices=[
+            "GIB-A.TO", "CSU.TO", "OTEX.TO", "SHOP.TO"
+        ],
+        nargs='*',
+        help="Information Technology sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--real_estate",
+        metavar="Real Estate",
+        widget="Listbox",
+        choices=[
+            "CAR-UN.TO", "FSV.TO"
+        ],
+        nargs='*',
+        help="Real Estate sector ticker symbols",
+        default=[]
+    )
+
+    ticker_group.add_argument(
+        "--utils",
+        metavar="Utilities",
+        widget="Listbox",
+        choices=[
+            "BIP-UN.TO", "EMA.TO", "FTS.TO", "H.TO"
+        ],
+        nargs='*',
+        help="Utilities sector ticker symbols",
+        default=[]
     )
 
     args = parser.parse_args()
@@ -136,7 +202,8 @@ def main():
     'RY.TO SAP.TO SHOP.TO SLF.TO SU.TO TRP.TO TECK-B.TO T.TO TRI.TO TD.TO TOU.TO WCN.TO WPM.TO WSP.TO')
 
     # List of symbols to provide data for
-    ticker_list = args.symbols
+    ticker_list = args.basic_mats + args.comm_services + args.consumer_cyc + args.consumer_stap + args.energy + args.fin_services + \
+                  args.industrials + args.info_tech + args.real_estate + args.utils
 
     if args.display:
         display_data(tickers, ticker_list)
