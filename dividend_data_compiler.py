@@ -57,7 +57,7 @@ def export_ohlc_to_csv(t, t_list, period):
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600), optional_cols=1)
+@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600), optional_cols=5)
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
@@ -70,7 +70,7 @@ def main():
     group.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
 
     # todo: allow use to choose filename and file path to download
-
+    # todo: change width of listboxes
     # TODO: split tickers into different sectors 
     ticker_group.add_argument(
         "--basic_mats",
@@ -80,7 +80,7 @@ def main():
             "AEM.TO", "ABX.TO", "FM.TO", "FNV.TO", "K.TO", "NTR.TO", "TECK-B.TO", "WPM.TO"
         ],
         nargs='*',
-        help="Basic Materials sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -92,7 +92,7 @@ def main():
             "BCE.TO", "RCI-B.TO", "T.TO"
         ],
         nargs='*',
-        help="Communication Services sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -104,7 +104,7 @@ def main():
             "ATD.TO", "CTC-A.TO", "CCL-B.TO", "GIL.TO", "MG.TO", "QSR.TO"
         ],
         nargs='*',
-        help="Consumer Cyclical sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -116,7 +116,7 @@ def main():
             "DOL.TO", "WN.TO", "L.TO", "MRU.TO", "SAP.TO"
         ],
         nargs='*',
-        help="Consumer Staples sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -128,7 +128,7 @@ def main():
             "AQN.TO", "CCO.TO", "CNQ.TO", "CVE.TO", "ENB.TO", "IMO.TO", "PPL.TO", "SU.TO", "TRP.TO", "TOU.TO"
         ],
         nargs='*',
-        help="Energy sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -140,7 +140,7 @@ def main():
             "BMO.TO", "BNS.TO", "BAM.TO", "BN.TO", "CM.TO", "IFC.TO", "MFC.TO", "NA.TO", "POW.TO", "RY.TO", "SLF.TO", "TD.TO"
         ],
         nargs='*',
-        help="Financial Services sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -152,7 +152,7 @@ def main():
             "CAE.TO", "CNR.TO", "CP.TO", "TRI.TO", "WCN.TO", "WSP.TO"
         ],
         nargs='*',
-        help="Industrials sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -164,7 +164,7 @@ def main():
             "GIB-A.TO", "CSU.TO", "OTEX.TO", "SHOP.TO"
         ],
         nargs='*',
-        help="Information Technology sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -176,7 +176,7 @@ def main():
             "CAR-UN.TO", "FSV.TO"
         ],
         nargs='*',
-        help="Real Estate sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
@@ -188,7 +188,7 @@ def main():
             "BIP-UN.TO", "EMA.TO", "FTS.TO", "H.TO"
         ],
         nargs='*',
-        help="Utilities sector ticker symbols",
+        help="ticker symbols",
         default=[]
     )
 
