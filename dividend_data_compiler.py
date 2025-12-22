@@ -2,6 +2,7 @@ import yfinance as yf
 from datetime import datetime, timezone, timedelta, date
 import pandas as pd
 from gooey import Gooey, GooeyParser
+import os
 
 def display_data(t, t_list):
     for symbol in t_list:
@@ -53,7 +54,7 @@ def export_ohlc_to_csv(t, t_list, period, file):
 
             cur_ohlc: pd.DataFrame = cur_ticker.history(start=period_start, end=period_end, interval='1d')
             cur_ohlc.insert(0, "Ticker", symbol)
-            cur_ohlc.to_csv("ohlc.csv", mode='a', header=False)
+            cur_ohlc.to_csv(file, mode='a', header=False)
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
@@ -76,8 +77,10 @@ def main():
                       gooey_options={
                           'wildcard': "CSV (Comma delimited) (*.csv)|*.csv|" "All files (*.*)|*.*",
                           'message': "Save As",
+                          'default_dir': os.path.abspath(os.getcwd()),
                           'default_file': "data.csv"
-                      })
+                      },
+                      default=os.path.join(os.path.abspath(os.getcwd()), "data.csv"))
 
     # todo: export the app to an executable file
 
