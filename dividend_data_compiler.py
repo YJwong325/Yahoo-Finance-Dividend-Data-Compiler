@@ -61,17 +61,22 @@ def export_ohlc_to_csv(t, t_list, period):
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
-    radio = parser.add_argument_group("Menu Options", "Choose to display or export data to a CSV file")
-    ticker_group = parser.add_argument_group("Ticker Options", "Select ticker symbols from different sectors to provide data for")
+    menu = parser.add_argument_group("Menu Options", "Choose to display or export data to a CSV file")
 
-    group = radio.add_mutually_exclusive_group()
-    group.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
-    group.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
-    group.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
+    radio = menu.add_mutually_exclusive_group()
+    radio.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
+    radio.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
+    radio.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
+
+    file = parser.add_argument_group("File Options", "If either export options are selected above, choose a location to save the CSV file")
+    file.add_argument("--dir", metavar="Choose directory to save CSV file", widget="DirChooser", help="Default is set to the current directory the executable is in", default=".")
 
     # todo: allow use to choose filename and file path to download
-    # todo: change width of listboxes
-    # TODO: split tickers into different sectors 
+    # todo: export the app to an executable file
+
+    ticker_group = parser.add_argument_group("Ticker Options", "Select ticker symbols from different sectors to provide data for")
+
+    # split tickers into different sectors 
     ticker_group.add_argument(
         "--basic_mats",
         metavar="Basic Materials",
@@ -193,6 +198,8 @@ def main():
     )
 
     args = parser.parse_args()
+
+    print(args.dir)
 
     # List of TSX60 ticker symbols
     tickers = yf.Tickers('AEM.TO AQN.TO ATD.TO BMO.TO BNS.TO ABX.TO BCE.TO BAM.TO ' \
