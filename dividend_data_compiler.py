@@ -18,8 +18,8 @@ def display_data(t, t_list):
         except:
             print(f'The data for the symbol {symbol} could not be successfully fetched.\n')
 
-def export_to_csv(t, t_list):
-    csv_file = open("data.csv", 'w')
+def export_to_csv(t, t_list, file):
+    csv_file = open(file, 'w')
     csv_file.write('Symbol,Div Yield,Div Pay Date,Ex-Div Date\n')
     # csv_file.write('Symbol,Div Yield,Div Pay Date\n')
 
@@ -37,9 +37,9 @@ def export_to_csv(t, t_list):
 
     csv_file.close()
 
-def export_ohlc_to_csv(t, t_list, period):
+def export_ohlc_to_csv(t, t_list, period, file):
     # clear out csv file before appending new data
-    csv_file = open("ohlc.csv", 'w')
+    csv_file = open(file, 'w')
     csv_file.write('Date,Ticker,Open,High,Low,Close,Volume,Dividends,Stock Splits\n')
     csv_file.close()
 
@@ -68,10 +68,17 @@ def main():
     radio.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
     radio.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
 
-    file = parser.add_argument_group("File Options", "If either export options are selected above, choose a location to save the CSV file")
-    file.add_argument("--dir", metavar="Choose directory to save CSV file", widget="DirChooser", help="Default is set to the current directory the executable is in", default=".")
+    file = parser.add_argument_group("File Options", "If either export options are selected above, choose a location and specify the filename to save the CSV file")
+    file.add_argument("file", 
+                      metavar="Save As", 
+                      help="Default filename is data.csv in the current directory",
+                      widget="FileSaver", 
+                      gooey_options={
+                          'wildcard': "CSV (Comma delimited) (*.csv)|*.csv|" "All files (*.*)|*.*",
+                          'message': "Save As",
+                          'default_file': "data.csv"
+                      })
 
-    # todo: allow use to choose filename and file path to download
     # todo: export the app to an executable file
 
     ticker_group = parser.add_argument_group("Ticker Options", "Select ticker symbols from different sectors to provide data for")
@@ -199,8 +206,6 @@ def main():
 
     args = parser.parse_args()
 
-    print(args.dir)
-
     # List of TSX60 ticker symbols
     tickers = yf.Tickers('AEM.TO AQN.TO ATD.TO BMO.TO BNS.TO ABX.TO BCE.TO BAM.TO ' \
     'BN.TO BIP-UN.TO CAE.TO CCO.TO CAR-UN.TO CM.TO CNR.TO CNQ.TO CP.TO CTC-A.TO CCL-B.TO ' \
@@ -215,9 +220,9 @@ def main():
     if args.display:
         display_data(tickers, ticker_list)
     elif args.export:
-        export_to_csv(tickers, ticker_list)
+        export_to_csv(tickers, ticker_list, args.file)
     elif args.exportOHLC:
-        export_ohlc_to_csv(tickers, ticker_list, 7)
+        export_ohlc_to_csv(tickers, ticker_list, 7, args.file)
     else:
         print("No option selected. Please try again.")
 
