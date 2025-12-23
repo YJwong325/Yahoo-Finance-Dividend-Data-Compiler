@@ -4,7 +4,15 @@ import pandas as pd
 from gooey import Gooey, GooeyParser
 import os
 
-def display_data(t, t_list):
+def display_data(t: yf.Tickers, t_list: list[str]) -> None:
+    """
+    Displays dividend data for the selected TSX60 constituents including dividend yield, dividend rate, 
+    and date of the latest paid dividend.
+    
+    :param t: yfinance Tickers object containing all TSX60 constituents.
+    :param t_list: List of TSX60 constituents to display data for.
+    """
+
     for symbol in t_list:
         try:
             cur: yf.Ticker = t.tickers[symbol]
@@ -19,7 +27,16 @@ def display_data(t, t_list):
         except:
             print(f'The data for the symbol {symbol} could not be successfully fetched.\n')
 
-def export_to_csv(t, t_list, file):
+def export_to_csv(t: yf.Tickers, t_list: list[str], file: str) -> None:
+    """
+    Exports dividend data for the selected TSX60 constituents including dividend yield, dividend rate,
+    and date of the latest paid dividend to a comma-separated values (CSV) file.
+    
+    :param t: yfinance Tickers object containing all TSX60 constituents.
+    :param t_list: List of TSX60 constituents to display data for.
+    :param file: The full path of the CSV file to save the data to.
+    """
+
     csv_file = open(file, 'w')
     csv_file.write('Symbol,Div Yield,Div Pay Date,Ex-Div Date\n')
     # csv_file.write('Symbol,Div Yield,Div Pay Date\n')
@@ -38,7 +55,17 @@ def export_to_csv(t, t_list, file):
 
     csv_file.close()
 
-def export_ohlc_to_csv(t, t_list, period, file):
+def export_ohlc_to_csv(t: yf.Tickers, t_list: list[str], period: int, file: str) -> None:
+    """
+    Exports the Open, High, Low, Close (OHLC) values for a specific number of days for the selected TSX60 constituents, including volume
+    and stock splits for each date/record, to a comma-separated values (CSV) file.
+    
+    :param t: yfinance Tickers object containing all TSX60 constituents.
+    :param t_list: List of TSX60 constituents to display data for.
+    :param period: The number of days before and after the last dividend pay date. (15-day period by default - allow users to choose in the future)
+    :param file: The full path of the CSV file to save the data to.
+    """
+
     # clear out csv file before appending new data
     csv_file = open(file, 'w')
     csv_file.write('Date,Ticker,Open,High,Low,Close,Volume,Dividends,Stock Splits\n')
@@ -58,33 +85,59 @@ def export_ohlc_to_csv(t, t_list, period, file):
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-@Gooey(program_name="Dividend Data Compiler", default_size=(800, 600), optional_cols=5)
+@Gooey(program_name="Dividend Data Compiler", program_description="A Python app to collect historical dividend data for S&&P/TSX 60 constituents on Yahoo Finance.", default_size=(800, 600))
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
-    menu = parser.add_argument_group("Menu Options", "Choose to display or export data to a CSV file")
+    # add title and description to radio button menu group
+    menu = parser.add_argument_group(
+        "Menu Options", 
+        "Choose to display or export data to a CSV file", 
+        gooey_options={
+            'show_border': True,
+            'show_underline': True
+        }
+    )
 
+    # add radio buttons
     radio = menu.add_mutually_exclusive_group()
     radio.add_argument("--display", metavar="Display Data", action="store_true", help="Display dividend data in console")
     radio.add_argument("--export", metavar="Export to CSV", action="store_true", help="Export dividend data to CSV file")
     radio.add_argument("--exportOHLC", metavar="Export OHLC to CSV", action="store_true", help="Export OHLC data in a 15 day period of the latest dividend pay date to CSV file")
 
-    file = parser.add_argument_group("File Options", "If either export options are selected above, choose a location and specify the filename to save the CSV file")
-    file.add_argument("file", 
-                      metavar="Save As", 
-                      help="Default filename is data.csv in the current directory",
-                      widget="FileSaver", 
-                      gooey_options={
-                          'wildcard': "CSV (Comma delimited) (*.csv)|*.csv|" "All files (*.*)|*.*",
-                          'message': "Save As",
-                          'default_dir': os.path.abspath(os.getcwd()),
-                          'default_file': "data.csv"
-                      },
-                      default=os.path.join(os.path.abspath(os.getcwd()), "data.csv"))
+    # add title, desc, and input to select filename and location to save the generated csv as 
+    file = parser.add_argument_group(
+        "File Options", 
+        "If either export options are selected above, choose a location and specify the filename to save the CSV file",
+        gooey_options={
+            'show_border': True,
+            'show_underline': True
+        }
+    )
+    file.add_argument(
+        "file", 
+        metavar="Save As", 
+        help="Default filename is data.csv in the current directory",
+        widget="FileSaver", 
+        gooey_options={
+            'wildcard': "CSV (Comma delimited) (*.csv)|*.csv|" "All files (*.*)|*.*",
+            'message': "Save As",
+            'default_dir': os.path.abspath(os.getcwd()),
+            'default_file': "data.csv"
+        },
+        default=os.path.join(os.path.abspath(os.getcwd()), "data.csv")
+    )
 
-    # todo: export the app to an executable file
-
-    ticker_group = parser.add_argument_group("Ticker Options", "Select ticker symbols from different sectors to provide data for")
+    # add title and description to TSX 60 ticker selection fields
+    ticker_group = parser.add_argument_group(
+        "Ticker Options", 
+        "Select ticker symbols from different sectors to provide data for", 
+        gooey_options={
+            'columns': 2,
+            'show_border': True,
+            'show_underline': True
+        }
+    )
 
     # split tickers into different sectors 
     ticker_group.add_argument(
@@ -207,6 +260,7 @@ def main():
         default=[]
     )
 
+    # retrieve user input
     args = parser.parse_args()
 
     # List of TSX60 ticker symbols
