@@ -2,9 +2,13 @@
 A Python script to collect historical dividend data for S&amp;P/TSX 60 constituents on Yahoo Finance. May also work for stocks outside TSX 60.
 
 # Download for Windows
-1. Go to the Releases page in the current repository
-2. Download `div_compiler.exe` or `div_compiler.zip` and extract the executable
-3. Run the file
+1. Go to the Releases page in the current repository on the right side below About
+    - Exact path `https://github.com/YJwong325/Yahoo-Finance-Dividend-Data-Compiler/releases/`
+    - Choose the latest release tag
+3. Download `div_compiler.exe` or `div_compiler.zip` and extract the executable
+4. Run the file
+
+> Compressed .zip file containing the executable is provided as an alternative for security.
 
 # Technologies used
 - YFinance library
