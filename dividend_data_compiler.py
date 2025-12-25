@@ -12,7 +12,6 @@ def display_data(t: yf.Tickers, t_list: list[str]) -> None:
     :param t: yfinance Tickers object containing all TSX60 constituents.
     :param t_list: List of TSX60 constituents to display data for.
     """
-
     for symbol in t_list:
         try:
             cur: yf.Ticker = t.tickers[symbol]
@@ -85,7 +84,12 @@ def export_ohlc_to_csv(t: yf.Tickers, t_list: list[str], period: int, file: str)
         except:
             print(f'Error writing information of {symbol} into csv file.')
 
-@Gooey(program_name="Dividend Data Compiler", program_description="A Python app to collect historical dividend data for S&&P/TSX 60 constituents on Yahoo Finance.", default_size=(800, 600))
+@Gooey(
+    program_name="Dividend Data Compiler", 
+    program_description="A Python app to collect historical dividend data for S&&P/TSX 60 constituents on Yahoo Finance.", 
+    default_size=(800, 600),
+    clear_before_run=True
+)
 def main():
     parser = GooeyParser(description="Dividend Data Compiler")
 
@@ -278,8 +282,10 @@ def main():
         display_data(tickers, ticker_list)
     elif args.export:
         export_to_csv(tickers, ticker_list, args.file)
+        print("Successfully exported to CSV file in the specified location.")
     elif args.exportOHLC:
         export_ohlc_to_csv(tickers, ticker_list, 7, args.file)
+        print("Successfully exported OHLC data to CSV file in the specified location.")
     else:
         print("No option selected. Please try again.")
 
